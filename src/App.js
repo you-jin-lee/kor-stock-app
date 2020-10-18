@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase";
 import db from "./firebase.js";
+import getStockInfo from "./getStockInfo.js";
 
 function App() {
   //리액트 훅으로 함수형 컴포넌트 state설정
   const [keyword, setKeyword] = useState("");
   const [corpData, setCorpData] = useState({});
-
+  const [stockList, setStockList] = useState({});
   const getStockData = (e) => {
     e.preventDefault();
     db.collection("corp_codes")
@@ -21,6 +22,7 @@ function App() {
           setKeyword("");
         });
       });
+    setStockList(getStockInfo(corpData.corp_code));
   };
 
   return (
@@ -45,7 +47,7 @@ function App() {
           <div className="corp_list">{corpData.corp_name}</div>
         </div>
         <div className="contents">
-          <div className="chart"></div>
+          <div className="chart">{stockList}</div>
           <div className="news_container"></div>
         </div>
       </div>
