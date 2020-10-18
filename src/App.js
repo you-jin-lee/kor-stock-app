@@ -1,16 +1,32 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase";
 import db from "./firebase.js";
-import getStockInfo from "./getStockInfo.js";
 
 function App() {
   //리액트 훅으로 함수형 컴포넌트 state설정
   const [keyword, setKeyword] = useState("");
   const [corpData, setCorpData] = useState({});
   const [stockList, setStockList] = useState({});
-  const getStockData = (e) => {
+
+  useEffect(() => {
+    const { corp_code } = corpData;
+    fetch("http://localhost:3002/corp", {
+      method: "post",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ corp_code: corp_code }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.corp_code);
+      });
+  }, [corpData]);
+
+  const getStockData = async (e) => {
     e.preventDefault();
-    db.collection("corp_codes")
+    await db
+      .collection("corp_codes")
       .where("corp_name", "==", keyword)
       .get()
       .then((querySnapshot) => {
@@ -22,14 +38,13 @@ function App() {
           setKeyword("");
         });
       });
-    setStockList(getStockInfo(corpData.corp_code));
   };
 
   return (
     <div className="App">
       <div className="container">
         <div className="sidebar">
-          <form action="/" method="get">
+          <form action="/corp" method="get">
             <input
               type="text"
               className="search"
@@ -44,10 +59,13 @@ function App() {
               search
             </button>
           </form>
-          <div className="corp_list">{corpData.corp_name}</div>
+          <div className="corp_list">
+            {corpData.corp_name}
+            {corpData.corp_code}
+          </div>
         </div>
         <div className="contents">
-          <div className="chart">{stockList}</div>
+          <div className="chart"></div>
           <div className="news_container"></div>
         </div>
       </div>

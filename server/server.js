@@ -1,3 +1,10 @@
+const express = require("express");
+const app = express();
+const api = require("./routes/index.js");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const port = 3002;
+
 function pad(n, width) {
   n = n + "";
   return n.length >= width ? n : new Array(width - n.length + 1).join("0") + n;
@@ -7,7 +14,7 @@ function getStockInfo(corpCode) {
   const axios = require("axios");
   const cheerio = require("cheerio");
   corpCode = pad(corpCode, 6);
-  console.log(corpCode);
+  console.log("https://finance.naver.com/item/sise_day.nhn?code=" + corpCode);
   const getHtml = async () => {
     try {
       return await axios.get(
@@ -37,7 +44,8 @@ function getStockInfo(corpCode) {
         const $trList = $bodyList.children("td");
         let tdList = {};
         $trList.each(function (j, el) {
-          tdList[td_index[j]] = $(this.find("span").text());
+          console.log(el);
+          tdList[td_index[j]] = $(el.find("span").text());
         });
         ulList.append(tdList);
       }
@@ -45,4 +53,19 @@ function getStockInfo(corpCode) {
   });
   return ulList;
 }
-export default getStockInfo;
+
+app.use(cors());
+
+app.use(bodyParser.json());
+//app.use('/corp', (req, res) => res.json({hi: 'youjin'}));
+app.use("/corp", (req, res) => {
+  var corp_code = req.body.corp_code;
+  var result = 0;
+  if (corp_code !== undefined) {
+    result = getStockInfo(corp_code);
+  }
+
+  res.json({ corp_code: result });
+});
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
