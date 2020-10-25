@@ -1,8 +1,9 @@
 var express = require("express");
 var router = express.Router();
 
-router.get("/chart/:id", function (req, res) {
-  res.send({ corp_name: `${req.params.id}` });
+router.get("/", function (req, res, next) {
+  res.send("hi");
+  next();
 });
 
 module.exports = router;

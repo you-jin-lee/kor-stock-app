@@ -1,0 +1,40 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: ivory;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+.nav .title_btn {
+  all: unset;
+  color: #f8842a;
+  margin: 1rem;
+  margin-bottom: 0rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+  font-style: italic;
+  cursor: pointer;
+}
+.nav .nav_btn {
+  all: unset;
+  color: ivory;
+  cursor: pointer;
+  margin: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 3px solid #fe9e59;
+  border-radius: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 3px;
+  transition: transform 0.7s;
+}
+
+.nav_btn:hover {
+  transition: transform 0.7s;
+  background-color: #fe9e59;
+}
