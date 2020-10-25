@@ -1,0 +1,23 @@
+.newslist {
+  display: flex;
+  flex-flow: column wrap;
+  width: 50rem;
+  align-items: center;
+}
+
+.newslist > :hover {
+  transform: scale(1.03);
+  transition: transform 0.35s;
+}
+
+.newslist .no_result {
+  font-size: 1.7rem;
+  font-weight: 600;
+  font-style: italic;
+  margin-top: 1rem;
+  color: #e1d9c6;
+}
+
+.no_result span {
+  font-style: normal;
+}
